@@ -42,10 +42,24 @@ const updateTask = (id, updatedTask) => {
 };
 
 
+const deleteTask = (id) => {
+    Tasks.forEach((Task, index) => {
+      if (Task.id === id) {
+        Tasks.splice(index, 1);
+      }
+    });
+  };
+
+
+
+
+
+
 
 module.exports = {
     findAllTasks,
     findById,
     createTask,
-    updateTask
+    updateTask,
+    deleteTask
 };

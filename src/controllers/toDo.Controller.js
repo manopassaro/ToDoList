@@ -35,8 +35,26 @@ const createTask = (req, res) => {
 }
 
 
+const updateTask = (req, res) => {
+    const id = parseInt(req.params.id);
+    const updatedTask = req.body;
+    res.send(toDoService.updateTask(id, updatedTask));
+  };
+
+
+const deleteTask = (req, res) => {
+    const id = parseInt(req.params.id);
+    const deletedTask = toDoService.deleteTask(id);
+    res.send(deletedTask);
+  };
+
+
+
+
   module.exports = {
     findAllTasks,
     findById,
-    createTask
+    createTask,
+    updateTask,
+    deleteTask
   }

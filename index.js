@@ -5,7 +5,7 @@ const cors = require('cors');
 const routes = require('./src/routers/router');
 
 // app.get('/', (req, res) => {
-//     res.send('i broke your hearth like someone did to mine');
+//     res.send('Hello world!');
 // });
 
 app.use(express.json());

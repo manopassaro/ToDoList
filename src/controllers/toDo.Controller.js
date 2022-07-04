@@ -1,60 +1,66 @@
-const toDoService = require('../service/toDo.Services')
+const toDoService = require("../service/toDo.Services");
 
+// const initialController = (req, res) => {
+//   console.log(req.headers["user-agent"]);
 
-const initialController = (req, res) => {
-    console.log(req.headers['user-agent']);
-    
-    const response = toDoService.initialService();
-    res.send(response);
+//   const response = toDoService.initialService();
+//   res.send(response);
+// };
+
+const findAllTasks = async (req, res) => {
+  Tasks = await toDoService.findAllTasks();
+
+  if (Tasks.length == 0) {
+    return res.status(206).send({ message: "Nenhuma tarefa cadastrada." });
   }
 
-
-
-const findAllTasks = (req, res) => {
-    res.send(toDoService.findAllTasks());
-  };
-
-
-
-const findById = (req, res) => {
-    const id = parseInt(req.params.id);
-    const find = toDoService.findById(id);
-
-    if(find === undefined){
-        res.status(204).send({ message: 'Nenhuma arefa encontrada' });
-    }else{
-        res.send({ message: 'Tarefa encontrada', find })
-    };
+  res.send(Tasks);
 };
 
+const findById = async (req, res) => {
+  const id = req.params.id;
+
+  const find = await toDoService.findById(id);
+
+  if (!find) {
+    return res.status(206).send({ message: "Nenhuma tarefa encontrada" });
+  }
+
+  res.send({ message: "Tarefa encontrada", find });
+};
 
 const createTask = (req, res) => {
-    const Task = req.body;
-    const Tasks = toDoService.createTask(Task);
-    res.send({ Tasks });
+  const newTask = req.body;
+
+  const Tasks = toDoService.createTask(newTask);
+
+  res.status(206).send({ Tasks });
+};
+
+const updateTask = async (req, res) => {
+  const id = req.params.id;
+  const updateTask = req.body;
+
+  const Task = await toDoService.findById(id);
+
+  const updatedTask = await paletasService.updatePaleta(id, updateTask);
+
+  res.send(updatedTask);
 }
 
 
-const updateTask = (req, res) => {
-    const id = parseInt(req.params.id);
-    const updatedTask = req.body;
-    res.send(toDoService.updateTask(id, updatedTask));
-  };
 
+const deleteTask = async (req, res) => {
+  const id = req.params.i;
+  
+  await toDoService.deleteTask(id);
+  res.send({message: 'Tarefa executada com sucesso!'});
+};
 
-const deleteTask = (req, res) => {
-    const id = parseInt(req.params.id);
-    const deletedTask = toDoService.deleteTask(id);
-    res.send(deletedTask);
-  };
-
-
-
-
-  module.exports = {
-    findAllTasks,
-    findById,
-    createTask,
-    updateTask,
-    deleteTask
-  }
+module.exports = {
+  findAllTasks,
+  findById,
+  createTask,
+  updateTask,
+  deleteTask,
+};
